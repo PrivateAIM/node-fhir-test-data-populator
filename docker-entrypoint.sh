@@ -27,8 +27,8 @@ if [ "$CLEAR_TESTDATA_DIRS" = "true" ]; then
     printf "## Removing previously generated data... \n\n"
     rm -rf output/*
 
-    mkdir output/fhir-processed
-    mkdir output/metadata
+    mkdir -p output/fhir-processed
+    mkdir -p output/metadata
 fi
 
 if [ "$ENABLE_PROCESS_TESTDATA" = "true" ]; then
