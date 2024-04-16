@@ -118,6 +118,64 @@ def get_numeric_log_level(log_level):
 def str_to_bool(s):
     return s.lower() in ["true", "yes", "1"]
 
+def get_fhir_resources(base_url):
+    """
+    Fetch and return the available FHIR resources from a FHIR server.
+
+    Args:
+        base_url (str): Base URL of the FHIR server.
+
+    Returns:
+        list: List of FHIR resource types.
+
+    """
+    capability_statement_url = f"{base_url}/metadata"
+    response = requests.get(capability_statement_url)
+
+    if response.status_code != 200:
+        print(f"Error: Unable to fetch CapabilityStatement. Status code: {response.status_code}")
+        return []
+
+    capability_statement = response.json()
+    resources = capability_statement.get('rest', [{}])[0].get('resource', [])
+
+    return [resource.get('type', '') for resource in resources]
+
+def get_resource_count(fhir_url, resource_type):
+    """
+    Get the count of a specific FHIR resource type.
+
+    Args:
+        fhir_url (str): Base URL of the FHIR server.
+        resource_type (str): FHIR resource type.
+
+    Returns:
+        int: Count of the specified resource type.
+
+    """
+    search_url = f"{fhir_url}/{resource_type}?_summary=count"
+    response = requests.get(search_url)
+    if response.status_code == 200:
+        return response.json().get('total', 0)
+    else:
+        print(f"Error fetching count for {resource_type}. Status code: {response.status_code}")
+        return 0
+
+def print_fhir_resources_count(fhir_url):
+    """
+    Print the count of each FHIR resource available on the FHIR server.
+
+    Args:
+        fhir_url (str): Base URL of the FHIR server.
+
+    """
+    fhir_resources = get_fhir_resources(fhir_url)
+
+    print("Available FHIR Resources:")
+    for resource_type in fhir_resources:
+        resource_count = get_resource_count(fhir_url, resource_type)
+        if resource_count > 0:
+            print(f"{resource_type}: {resource_count}")
 
 def main():
     parser = argparse.ArgumentParser(
@@ -183,6 +241,8 @@ def main():
     with open(f"{args.metadatadir}/loaded_data_info.json", "w") as json_file:
         json.dump(processed_data_info, json_file, indent=4)
 
+    # Print FHIR resources and their counts
+    print_fhir_resources_count(args.fhirurl)
 
 if __name__ == "__main__":
     main()
