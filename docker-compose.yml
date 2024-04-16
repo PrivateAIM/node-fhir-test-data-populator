@@ -1,7 +1,8 @@
 version: '3.7'
 services:
   node-fhir-test-data-populator:
-    build: .
+    image: ghcr.io/privateaim/node-fhir-test-data-populator:latest
+    # build: .
     environment:
       CLEAR_TESTDATA_DIRS: ${CLEAR_TESTDATA_DIRS:-"true"}
       # SYNTHEA GENERATION
@@ -17,11 +18,11 @@ services:
       ENABLE_SENT_DATA_TO_FHIR: ${ENABLE_SENT_DATA_TO_FHIR:-""}
       GZIPPED_FHIR_SEND_INPUT_FILES: ${GZIPPED_FHIR_SEND_INPUT_FILES:-"false"}
       REMOVE_INPUTFILES_FHIR_SENDING: ${REMOVE_INPUTFILES_FHIR_SENDING:-"false"}
-      FHIR_URL: ${FHIR_URL:-"http://localhost:8081/fhir"}
+      FHIR_URL: ${FHIR_URL:-"http://localhost:8080/fhir"}
       FHIR_USER: ${FHIR_USER:-""}
       FHIR_PW: ${FHIR_PW:-""}
     volumes:
-      - "./generated-testdata:/gen/output"
+      # - "./generated-testdata:/gen/output"
       - "./synthea.properties:/gen/synthea.properties"
       - "./docker-entrypoint.sh:/gen/docker-entrypoint.sh"
       - "./project/testdata-post-processing.py:/gen/testdata-post-processing.py"
