@@ -118,6 +118,7 @@ def get_numeric_log_level(log_level):
 def str_to_bool(s):
     return s.lower() in ["true", "yes", "1"]
 
+
 def get_fhir_resources(base_url):
     """
     Fetch and return the available FHIR resources from a FHIR server.
@@ -133,13 +134,16 @@ def get_fhir_resources(base_url):
     response = requests.get(capability_statement_url)
 
     if response.status_code != 200:
-        print(f"Error: Unable to fetch CapabilityStatement. Status code: {response.status_code}")
+        print(
+            f"Error: Unable to fetch CapabilityStatement. Status code: {response.status_code}"
+        )
         return []
 
     capability_statement = response.json()
-    resources = capability_statement.get('rest', [{}])[0].get('resource', [])
+    resources = capability_statement.get("rest", [{}])[0].get("resource", [])
 
-    return [resource.get('type', '') for resource in resources]
+    return [resource.get("type", "") for resource in resources]
+
 
 def get_resource_count(fhir_url, resource_type):
     """
@@ -156,10 +160,13 @@ def get_resource_count(fhir_url, resource_type):
     search_url = f"{fhir_url}/{resource_type}?_summary=count"
     response = requests.get(search_url)
     if response.status_code == 200:
-        return response.json().get('total', 0)
+        return response.json().get("total", 0)
     else:
-        print(f"Error fetching count for {resource_type}. Status code: {response.status_code}")
+        print(
+            f"Error fetching count for {resource_type}. Status code: {response.status_code}"
+        )
         return 0
+
 
 def print_fhir_resources_count(fhir_url):
     """
@@ -176,6 +183,7 @@ def print_fhir_resources_count(fhir_url):
         resource_count = get_resource_count(fhir_url, resource_type)
         if resource_count > 0:
             print(f"{resource_type}: {resource_count}")
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -243,6 +251,7 @@ def main():
 
     # Print FHIR resources and their counts
     print_fhir_resources_count(args.fhirurl)
+
 
 if __name__ == "__main__":
     main()
