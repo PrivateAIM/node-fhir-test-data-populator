@@ -250,7 +250,10 @@ def main():
         json.dump(processed_data_info, json_file, indent=4)
 
     # Print FHIR resources and their counts
-    print_fhir_resources_count(args.fhirurl)
+    try:
+        print_fhir_resources_count(args.fhirurl)
+    except Exception as e:
+        logging.error(f"An error occurred while printing FHIR resources count: {e}")
 
 
 if __name__ == "__main__":
