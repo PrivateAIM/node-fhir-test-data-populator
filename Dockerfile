@@ -10,8 +10,8 @@ COPY ./project/continuously-load-testdata.py /gen/
 RUN chown -R 1000:1000 /gen
 RUN apt update && apt install -y jq
 RUN apt install -y python3
-RUN apt install -y python3-pip
-RUN pip3 install requests
+RUN apt install -y python3-requests
+
 
 WORKDIR /gen
 USER 1000
