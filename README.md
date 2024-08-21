@@ -23,6 +23,8 @@ Please note: If you're sending data to a FHIR server within your Docker network,
 | CLEAR_TESTDATA_DIRS | Enables clearing of the testdata dirs. Possible Values: true,   false | true |
 | ENABLE_GENERATE_SYNTHEA_DATA | Enables the generation of   the synthea data - enable if no data has been generated yet or if you want to   generate new data. Possible Values: true, false | true |
 | SYNTHEA_N_PATIENTS | The number of patients you would like to generate data for | 100 |
+| SYNTHEA_SEED | The seed (-s) for the synthea tool | 3256262546 |
+| SYNTHEA_CLINICIAN_SEED | The clinicianSeed (-cs) for the synthea tool | 3726451 |
 | TIMEOUT | The time the processing and sending programs wait for new files to appear before they shut down. This is used to continuously process the synthea data as it is being generated. |  |
 | ENABLE_PROCESS_TESTDATA | Enables the post processing of the synthea data. Possible Values: true, false |  |
 | GZIP_PROCESSED_OUTPUT_FILES | Would you like to gzip the processed files to save disk space? Possible Values: true, false |  |
